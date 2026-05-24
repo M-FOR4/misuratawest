@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+/* ── Design Tokens ── */
+@theme {
+  --font-sans: "Cairo", sans-serif;
+  --color-brand-blue: #1851b4;
+  --color-brand-blue-dark: #0f3a82;
+  --color-brand-blue-light: #2a6dd9;
+  --color-brand-yellow: #f3c802;
+  --color-bg: #060b18;
+  --color-bg-2: #0c1428;
+  --color-bg-3: #091020;
+}
+
+/* ── Base ── */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: "IBM Plex Sans Arabic", sans-serif;
+    background-color: #060b18;
+    color: #ffffff;
+    direction: rtl;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: #060b18; }
+  ::-webkit-scrollbar-thumb { background: #1851b4; border-radius: 4px; }
+}
+
+/* ── Keyframes ── */
+@keyframes marquee-rtl {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-100% / 3)); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.85); }
+}
+
+@keyframes bounce-arrow {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(6px); }
+}
