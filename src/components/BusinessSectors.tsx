@@ -19,18 +19,21 @@ const sectors = [
     colSpan: "lg:col-span-2",
     rowSpan: "lg:row-span-2",
     minH: "clamp(300px, 42vh, 480px)",
+    bgProps: { size: "120%", pos: "top 60% center" },
   },
   {
     id: "tires",
     icon: CircleDot,
     title: "الإطارات",
     desc: "إطارات النقل الثقيل والمعدات الإنشائية بأعلى مواصفات الأداء والأمان من كبرى الماركات العالمية.",
-    img: "/bigtire.png",
+    img: "/tair4.jpg",
     brands: ["Bridgestone", "Hankook", "Lassa", "Linglong", "Austone"],
     color: "#3b82f6",
     colSpan: "lg:col-span-2",
     rowSpan: "",
     minH: "clamp(200px, 25vh, 280px)",
+    bgProps: { size: "100%", pos: "left 30% center" },
+    hasPattern: true,
   },
   {
     id: "batteries",
@@ -49,12 +52,14 @@ const sectors = [
     icon: Truck,
     title: "معدات Bobcat وقطع الغيار",
     desc: "معدات Bobcat لقطاعات البناء والتعدين، مع توفير قطع الغيار الأصلية.",
-    img: "/equipment.jpg",
+    img: "/M_height.jpeg",
     brands: ["Bobcat"],
     color: "#ea580c",
     colSpan: "",
     rowSpan: "",
     minH: "clamp(200px, 25vh, 280px)",
+    bgProps: { size: "140%", pos: "left 40% center" },
+    hasPattern: true,
   },
 ];
 
@@ -94,13 +99,38 @@ function SectorCard({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
+      {/* Dynamic backdrop for cards that don't “cover” entirely */}
+      <div className="absolute inset-0 bg-[#070e1c]" />
+
+      {/* Dotted pattern effect */}
+      {(s as any).hasPattern && (
+        <div
+          className="absolute inset-0 opacity-[0.15]"
+          style={{
+            backgroundImage: `radial-gradient(circle at 2px 2px, ${s.color} 1px, transparent 0)`,
+            backgroundSize: "28px 28px",
+          }}
+        />
+      )}
+
+      {/* Decorative Light Slash */}
+      {(s as any).hasPattern && (
+        <div
+          className="absolute inset-0 opacity-10 pointer-events-none"
+          style={{
+            background: `linear-gradient(135deg, transparent 40%, ${s.color} 50%, transparent 60%)`,
+          }}
+        />
+      )}
+
       {/* Background photo */}
       <div
         className="absolute inset-0 transition-transform duration-700 ease-out"
         style={{
           backgroundImage: `url('${s.img}')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundSize: (s as any).bgProps ? (s as any).bgProps.size : "cover",
+          backgroundPosition: (s as any).bgProps ? (s as any).bgProps.pos : "center",
+          backgroundRepeat: "no-repeat",
           transform: hovered ? "scale(1.07)" : "scale(1)",
         }}
       />
