@@ -1,19 +1,62 @@
 "use client";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 const partners = [
-  { name: "Bridgestone", logo: "/bridgestone-logo.jpg" },
-  { name: "Hankook", logo: "/hankook-logo.jpg" },
-  { name: "Lassa", logo: "/lassa-logo.jpg" },
-  { name: "Linglong", logo: "/linglong-logo.jpeg" },
-  { name: "Austone", logo: "/austone-logo.jpg" },
-  { name: "Petronas", logo: "/petronas-logo.png" },
-  { name: "Champion", logo: "/champion-logo.jpg" },
-  { name: "Varta", logo: "/varta-logo.jpg" },
+  { name: "Bridgestone", logo: "/partners-icons/bridgestone-logo.png", imgClass: "max-w-[260px] max-h-[130px]" },
+  { name: "Hankook", logo: "/partners-icons/hankook-logo.png", imgClass: "max-w-[260px] max-h-[130px]" },
+  { name: "Lassa", logo: "/partners-icons/lassa-logo.png", imgClass: "max-w-[260px] max-h-[130px]" },
+  { name: "Linglong", logo: "/partners-icons/linglong-logo.png", imgClass: "max-w-[260px] max-h-[130px]" },
+  { name: "Austone", logo: "/partners-icons/austone-tires-logo.png", imgClass: "max-w-[260px] max-h-[130px]" },
+  { name: "Petronas", logo: "/partners-icons/PETRONAS-logo.svg.png", imgClass: "max-w-[110px] max-h-[65px]" },
+  { name: "Champion", logo: "/partners-icons/champion.png", imgClass: "max-w-[260px] max-h-[130px]" },
+  { name: "Varta", logo: "/partners-icons/varta.png", imgClass: "max-w-[260px] max-h-[130px]" },
+  { name: "Dunlop", logo: "/partners-icons/DUNLOP.png", imgClass: "max-w-[130px] max-h-[75px]" },
 ];
 
-// نضاعف المصفوفة مرتين لضمان ملء الشاشة بالكامل دون أي فراغات
 const duplicatedPartners = [...partners, ...partners, ...partners, ...partners];
+
+function PartnerLogo({ partner }: { partner: typeof partners[0] }) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div
+      className="group flex-shrink-0 w-[280px] h-[140px] flex items-center justify-center p-2 transition-all duration-500 cursor-pointer"
+      style={{
+        background: "transparent",
+        transform: hovered ? "translateY(-6px) scale(1.1)" : "translateY(0) scale(1)"
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <img
+        src={partner.logo}
+        alt={partner.name}
+        className={`${partner.imgClass} object-contain transition-all duration-500`}
+        style={{
+          filter: hovered
+            ? "brightness(1) invert(0) drop-shadow(0 15px 25px rgba(24,81,180,0.3))"
+            : "brightness(0) invert(1) opacity(0.7)",
+        }}
+        onError={(e) => {
+          e.currentTarget.style.display = "none";
+          const sibling = e.currentTarget.nextElementSibling as HTMLElement;
+          if (sibling) sibling.style.display = "block";
+        }}
+      />
+      <span
+        className="text-[20px] font-bold tracking-widest transition-colors duration-500 select-none uppercase"
+        style={{
+          display: "none",
+          color: hovered ? "#f3c802" : "rgba(255,255,255,0.5)",
+          textShadow: hovered ? "0 0 15px rgba(243,200,2,0.3)" : "none",
+        }}
+      >
+        {partner.name}
+      </span>
+    </div>
+  );
+}
 
 export default function PartnersMarquee() {
   return (
@@ -26,8 +69,19 @@ export default function PartnersMarquee() {
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1851b4]/30 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1851b4]/10 to-transparent" />
 
+      {/* Decorative Orbs */}
+      <div
+        className="absolute top-1/2 left-1/4 w-[300px] h-[300px] rounded-full pointer-events-none"
+        style={{
+          background: "radial-gradient(circle, rgba(24,81,180,0.06) 0%, transparent 70%)",
+          filter: "blur(40px)",
+          // @ts-ignore
+          animation: "float 8s ease-in-out infinite",
+        }}
+      />
+
       {/* Section header */}
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 mb-16 text-center">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 mb-16 text-center relative z-10">
         <p
           className="text-[13px] font-bold uppercase tracking-[0.25em] mb-4"
           style={{ color: "#1851b4" }}
@@ -43,16 +97,15 @@ export default function PartnersMarquee() {
       </div>
 
       {/* Marquee wrapper */}
-      {/* نجبر الحاوية على اتجاه LTR لتفادي مشاكل الـ RTL في الأنيميشن */}
-      <div className="relative flex w-full overflow-hidden" dir="ltr">
+      <div className="relative flex w-full overflow-hidden py-4" dir="ltr">
         {/* Edge fades */}
         <div
-          className="absolute right-0 top-0 bottom-0 w-32 z-10 pointer-events-none"
-          style={{ background: "linear-gradient(to left, #0a1122, transparent)" }}
+          className="absolute right-0 top-0 bottom-0 w-40 z-10 pointer-events-none"
+          style={{ background: "linear-gradient(to left, #060b18, transparent)" }}
         />
         <div
-          className="absolute left-0 top-0 bottom-0 w-32 z-10 pointer-events-none"
-          style={{ background: "linear-gradient(to right, #0a1122, transparent)" }}
+          className="absolute left-0 top-0 bottom-0 w-40 z-10 pointer-events-none"
+          style={{ background: "linear-gradient(to right, #060b18, transparent)" }}
         />
 
         {/* Track using Framer Motion */}
@@ -63,43 +116,12 @@ export default function PartnersMarquee() {
           }}
           transition={{
             ease: "linear",
-            duration: 35,
+            duration: 40,
             repeat: Infinity,
           }}
         >
           {duplicatedPartners.map((p, i) => (
-            <div
-              key={i}
-              className="group flex-shrink-0 w-[180px] h-[95px] rounded-2xl overflow-hidden flex items-center justify-center p-5 transition-all duration-500 cursor-pointer"
-              style={{
-                background: "rgba(255,255,255,0.98)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.2)"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-6px)";
-                e.currentTarget.style.boxShadow = "0 20px 40px rgba(24,81,180,0.25)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.2)";
-              }}
-            >
-              <img
-                src={p.logo}
-                alt={p.name}
-                className="max-h-[55px] max-w-[130px] object-contain transition-all duration-500 opacity-80"
-                style={{ filter: "grayscale(100%)" }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.filter = "grayscale(0%)";
-                  e.currentTarget.style.opacity = "1";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.filter = "grayscale(100%)";
-                  e.currentTarget.style.opacity = "0.8";
-                }}
-              />
-            </div>
+            <PartnerLogo key={i} partner={p} />
           ))}
         </motion.div>
       </div>
